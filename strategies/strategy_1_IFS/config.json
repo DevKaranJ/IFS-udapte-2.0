@@ -1,0 +1,7 @@
+{
+    "leverage": 3,
+    "risk_percent": 1.0,
+    "trail_activation": 1.5,
+    "symbol": "BTCUSDT",
+    "sl_pct": 0.5
+}

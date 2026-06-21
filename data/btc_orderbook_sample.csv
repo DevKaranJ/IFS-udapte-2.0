@@ -1,0 +1,4 @@
+timestamp,price,cvd,stacked_imbalance,block_detected,mid_price_30m_ago
+1,60000,-500,False,False,60100
+2,60050,-1000,True,True,60150
+3,60100,-1500,True,True,60200
