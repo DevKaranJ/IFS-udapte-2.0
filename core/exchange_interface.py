@@ -10,10 +10,8 @@ class ExchangeInterface:
         api_key = os.getenv('BINANCE_API_KEY')
         api_secret = os.getenv('BINANCE_API_SECRET')
 
-        # We need Futures Testnet
         self.client = Client(api_key, api_secret, testnet=use_testnet)
 
-        # Testnet Futures Base URL
         if use_testnet:
             self.client.FUTURES_URL = 'https://testnet.binancefuture.com/fapi'
 
@@ -35,34 +33,22 @@ class ExchangeInterface:
         except Exception as e:
             print(f"Error setting leverage: {e}")
 
-    def place_market_order(self, symbol, side, quantity):
+    def place_market_order(self, symbol, side, quantity, reduce_only=False):
         try:
-            order = self.client.futures_create_order(
-                symbol=symbol,
-                side=side,
-                type=ORDER_TYPE_MARKET,
-                quantity=quantity
-            )
+            params = {
+                'symbol': symbol,
+                'side': side,
+                'type': ORDER_TYPE_MARKET,
+                'quantity': quantity
+            }
+            if reduce_only:
+                params['reduceOnly'] = 'true'
+
+            order = self.client.futures_create_order(**params)
             print(f"Market order placed: {side} {quantity} {symbol}")
             return order
         except Exception as e:
             print(f"Error placing market order: {e}")
-            return None
-
-    def place_limit_order(self, symbol, side, quantity, price):
-        try:
-            order = self.client.futures_create_order(
-                symbol=symbol,
-                side=side,
-                type=ORDER_TYPE_LIMIT,
-                timeInForce=TIME_IN_FORCE_GTC,
-                quantity=quantity,
-                price=price
-            )
-            print(f"Limit order placed: {side} {quantity} {symbol} @ {price}")
-            return order
-        except Exception as e:
-            print(f"Error placing limit order: {e}")
             return None
 
     def place_stop_market_order(self, symbol, side, stop_price, quantity=None, close_position=False):
@@ -101,10 +87,6 @@ class ExchangeInterface:
             return None
 
     def get_historical_klines(self, symbol, interval, limit=24):
-        """
-        Fetches historical klines.
-        interval: Client.KLINE_INTERVAL_1HOUR, Client.KLINE_INTERVAL_4HOUR, etc.
-        """
         try:
             klines = self.client.futures_klines(symbol=symbol, interval=interval, limit=limit)
             df = pd.DataFrame(klines, columns=[

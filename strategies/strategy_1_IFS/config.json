@@ -1,7 +1,17 @@
 {
+    "symbol": "BTCUSDT",
     "leverage": 3,
     "risk_percent": 1.0,
+    "stop_loss_percent": 0.5,
+    "altcoin_stop_loss_percent": 1.0,
     "trail_activation": 1.5,
-    "symbol": "BTCUSDT",
-    "sl_pct": 0.5
+    "proximity_threshold": 0.05,
+    "fib_lookback_days": 7,
+    "fib_timeframe": "4h",
+    "cvd_window_minutes": 30,
+    "imbalance_ratio": 3.0,
+    "imbalance_levels": 3,
+    "block_order_threshold": 10.0,
+    "block_order_seconds": 5,
+    "invalidation_seconds": 60
 }
